@@ -55,10 +55,16 @@ public class CharacterProgressionGame {
                     break;
             }
 
+            // End condition: HP drops to 0
+            if (hero.getHealth() <= GameCharacter.MIN_HP) {
+                System.out.println("\n You have been defeated. Game over.");
+                break;
+            }
+
             // End condition: Master level reached
             if (hero.isMaster()) {
                 System.out.println("\n Congratulations! You have reached the Master level.");
-                System.out.println(" Game over.");
+                System.out.println(" You win!");
                 break;
             }
         }

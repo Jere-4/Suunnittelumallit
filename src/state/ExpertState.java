@@ -9,7 +9,7 @@ public class ExpertState extends BaseState {
 
     @Override
     public void train(GameCharacter c) {
-        System.out.println("You master advanced forms and intense regimens...");
+        System.out.println("You master advanced forms and intense techniques...");
         c.addExperience(GameCharacter.TRAIN_XP_GAIN);
     }
 
@@ -24,8 +24,10 @@ public class ExpertState extends BaseState {
         System.out.println("You engage in a challenging duel...");
         c.addHealth(-GameCharacter.FIGHT_HP_COST);
         c.addExperience(GameCharacter.FIGHT_XP_GAIN);
-        if (c.getHealth() == GameCharacter.MIN_HP) {
-            System.out.println("⚠️ Your health is critically low. Consider meditating.");
+        if ( c.getHealth() <= GameCharacter.LOW_HP) {
+            if ( c.getHealth() > GameCharacter.MIN_HP) {
+                System.out.println(" Your health is critically low. Consider meditating.");
+            }
         }
     }
 

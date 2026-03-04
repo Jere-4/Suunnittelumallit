@@ -7,7 +7,7 @@ public class GameCharacter {
     // --- Progression thresholds ---
     public static final int NOVICE_TO_INTERMEDIATE_XP = 50;
     public static final int INTERMEDIATE_TO_EXPERT_XP = 150;
-    public static final int EXPERT_TO_MASTER_XP = 300;
+    public static final int EXPERT_TO_MASTER_XP = 350;
 
     // --- Action effects ---
     public static final int TRAIN_XP_GAIN = 10;
@@ -18,6 +18,7 @@ public class GameCharacter {
     // --- Health bounds ---
     public static final int MAX_HP = 100;
     public static final int MIN_HP = 0;
+    public static final int LOW_HP = 10;
 
     private final String name;
     private int experience;
