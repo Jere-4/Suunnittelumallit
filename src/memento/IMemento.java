@@ -1,6 +1,3 @@
 package memento;
 
-public interface IMemento {
-    // memento metadata methods
-
-}
+public interface IMemento {}

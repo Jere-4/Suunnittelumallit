@@ -1,48 +1,41 @@
 package memento;
 
-import java.util.ArrayList;
-import java.util.List;
+import javafx.scene.paint.Color;
+import java.util.Stack;
 
 public class Controller {
+
     private Model model;
-    private Gui gui;
-    private List<IMemento> history; // Memento history
 
-    public Controller(Gui gui) {
-        this.model = new Model();
-        this.gui = gui;
-        this.history = new ArrayList<>();
+    private Stack<IMemento> undoStack = new Stack<>();
+    private Stack<IMemento> redoStack = new Stack<>();
+
+    public Controller(Model model) {
+        this.model = model;
     }
 
-    public void setOption(int optionNumber, int choice) {
-        saveToHistory();
-        model.setOption(optionNumber, choice);
-    }
-
-    public int getOption(int optionNumber) {
-        return model.getOption(optionNumber);
-    }
-
-    public void setIsSelected(boolean isSelected) {
-        saveToHistory();
-        model.setIsSelected(isSelected);
-    }
-
-    public boolean getIsSelected() {
-        return model.getIsSelected();
+    public void saveState() {
+        undoStack.push(model.createMemento());
+        redoStack.clear(); // new edit clears redo history
     }
 
     public void undo() {
-        if (!history.isEmpty()) {
-            System.out.println("Memento found in history");
-            IMemento previousState = history.remove(history.size() - 1);
-            model.restoreState(previousState);
-            gui.updateGui();
+        if (!undoStack.isEmpty()) {
+            redoStack.push(model.createMemento());
+            IMemento previousState = undoStack.pop();
+            model.restore(previousState);
         }
     }
 
-    private void saveToHistory() {
-        IMemento currentState = model.createMemento();
-        history.add(currentState);
+    public void redo() {
+        if (!redoStack.isEmpty()) {
+            undoStack.push(model.createMemento());
+            IMemento nextState = redoStack.pop();
+            model.restore(nextState);
+        }
+    }
+
+    public Model getModel() {
+        return model;
     }
 }
