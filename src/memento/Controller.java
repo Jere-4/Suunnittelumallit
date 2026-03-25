@@ -1,6 +1,7 @@
 package memento;
 
-import javafx.scene.paint.Color;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class Controller {
@@ -9,30 +10,43 @@ public class Controller {
 
     private Stack<IMemento> undoStack = new Stack<>();
     private Stack<IMemento> redoStack = new Stack<>();
+    private List<IMemento> historyList = new ArrayList<>();
 
     public Controller(Model model) {
         this.model = model;
     }
 
     public void saveState() {
-        undoStack.push(model.createMemento());
-        redoStack.clear(); // new edit clears redo history
+        IMemento m = model.createMemento();
+        undoStack.push(m);
+        historyList.add(m);
+        redoStack.clear();
     }
 
     public void undo() {
         if (!undoStack.isEmpty()) {
             redoStack.push(model.createMemento());
-            IMemento previousState = undoStack.pop();
-            model.restore(previousState);
+            IMemento prev = undoStack.pop();
+            model.restore(prev);
         }
     }
 
     public void redo() {
         if (!redoStack.isEmpty()) {
             undoStack.push(model.createMemento());
-            IMemento nextState = redoStack.pop();
-            model.restore(nextState);
+            IMemento next = redoStack.pop();
+            model.restore(next);
         }
+    }
+
+    public void restoreFromHistory(IMemento m) {
+        undoStack.push(model.createMemento());
+        redoStack.clear();
+        model.restore(m);
+    }
+
+    public List<IMemento> getHistoryList() {
+        return historyList;
     }
 
     public Model getModel() {

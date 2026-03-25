@@ -1,3 +1,5 @@
 package memento;
 
-public interface IMemento {}
+public interface IMemento {
+    String getTimestamp();
+}

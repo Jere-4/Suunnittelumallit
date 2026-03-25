@@ -21,7 +21,6 @@ public class Model {
         this.checked = mem.isChecked();
     }
 
-    // Actions:
     public void changeColor1() { color1 = Color.color(Math.random(), Math.random(), Math.random()); }
     public void changeColor2() { color2 = Color.color(Math.random(), Math.random(), Math.random()); }
     public void changeColor3() { color3 = Color.color(Math.random(), Math.random(), Math.random()); }

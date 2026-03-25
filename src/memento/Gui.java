@@ -3,12 +3,9 @@ package memento;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.input.*;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class Gui extends Application {
@@ -27,9 +24,11 @@ public class Gui extends Application {
         CheckBox cb = new CheckBox("Check me");
         cb.setSelected(model.isChecked());
 
-        // save initial state
+        Button historyBtn = new Button("History");
+
         controller.saveState();
 
+        // Color box events
         box1.setOnMouseClicked(e -> {
             controller.saveState();
             model.changeColor1();
@@ -54,11 +53,14 @@ public class Gui extends Application {
             cb.setSelected(model.isChecked());
         });
 
-        VBox root = new VBox(10, new HBox(10, box1, box2, box3), cb);
-        root.setPadding(new Insets(20));
-        Scene scene = new Scene(root, 500, 200);
+        // Undo
+        Scene scene = new Scene(new VBox(
+                10,
+                new HBox(10, box1, box2, box3),
+                cb,
+                historyBtn
+        ), 550, 250);
 
-        // CTRL+Z → Undo
         scene.getAccelerators().put(
                 new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN),
                 () -> {
@@ -67,7 +69,7 @@ public class Gui extends Application {
                 }
         );
 
-        // ✅ CTRL+Y → Redo
+        // Redo
         scene.getAccelerators().put(
                 new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN),
                 () -> {
@@ -76,9 +78,31 @@ public class Gui extends Application {
                 }
         );
 
+        // History button
+        historyBtn.setOnAction(e -> openHistoryWindow());
+
         stage.setScene(scene);
         stage.setTitle("Memento Example");
         stage.show();
+    }
+
+    private void openHistoryWindow() {
+        Stage historyStage = new Stage();
+        historyStage.setTitle("History");
+
+        ListView<IMemento> listView = new ListView<>();
+        listView.getItems().addAll(controller.getHistoryList());
+
+        listView.setOnMouseClicked(e -> {
+            IMemento selected = listView.getSelectionModel().getSelectedItem();
+            if (selected != null) {
+                controller.restoreFromHistory(selected);
+            }
+        });
+
+        Scene scene = new Scene(listView, 300, 400);
+        historyStage.setScene(scene);
+        historyStage.show();
     }
 
     private void updateView(ColorBox box1, ColorBox box2, ColorBox box3, CheckBox cb) {
