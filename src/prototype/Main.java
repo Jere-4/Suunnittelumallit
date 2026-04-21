@@ -37,15 +37,15 @@ public class Main {
     }
 
     private static void seedData() {
-        Recommendation kids = new Recommendation("Fantasy");
-        kids.addBook(new Book("Harry Potter", "J.K. Rowling", "Fantasy", 1997));
-        kids.addBook(new Book("The Hobbit", "J.R.R. Tolkien", "Fantasy", 1937));
+        Recommendation fantasy = new Recommendation("Fantasy");
+        fantasy.addBook(new Book("Harry Potter", "J.K. Rowling", "Fantasy", 1997));
+        fantasy.addBook(new Book("The Hobbit", "J.R.R. Tolkien", "Fantasy", 1937));
 
         Recommendation sciFi = new Recommendation("Science Fiction");
         sciFi.addBook(new Book("Dune", "Frank Herbert", "Science Fiction", 1965));
         sciFi.addBook(new Book("Neuromancer", "William Gibson", "Cyberpunk", 1984));
 
-        recommendations.add(kids);
+        recommendations.add(fantasy);
         recommendations.add(sciFi);
     }
 
